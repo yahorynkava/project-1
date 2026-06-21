@@ -1,0 +1,589 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f7eed8" />
+    <title>Times Table Club</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="notebook" aria-labelledby="page-title">
+      <section class="page page-left">
+        <div class="intro">
+          <span class="eyebrow">LEARN • PLAY • REMEMBER</span>
+          <h1 id="page-title">Times Table<br /><em>Club!</em></h1>
+          <p>Pick a number and let’s make multiplication feel easy.</p>
+        </div>
+
+        <nav class="tabs" aria-label="Choose a times table">
+          <button class="tab" data-table="10" aria-pressed="false"><strong>10</strong><span>times table</span></button>
+          <button class="tab" data-table="5" aria-pressed="false"><strong>5</strong><span>times table</span></button>
+          <button class="tab" data-table="2" aria-pressed="false"><strong>2</strong><span>times table</span></button>
+          <button class="tab" data-table="3" aria-pressed="false"><strong>3</strong><span>times table</span></button>
+          <button class="tab" data-table="4" aria-pressed="false"><strong>4</strong><span>times table</span></button>
+          <button class="tab" data-table="8" aria-pressed="false"><strong>8</strong><span>times table</span></button>
+          <button class="tab" data-table="6" aria-pressed="false"><strong>6</strong><span>times table</span></button>
+          <button class="tab" data-table="9" aria-pressed="false"><strong>9</strong><span>times table</span></button>
+          <button class="tab" data-table="7" aria-pressed="false"><strong>7</strong><span>times table</span></button>
+          <button class="tab" data-table="11" aria-pressed="false"><strong>11</strong><span>times table</span></button>
+          <button class="tab" data-table="12" aria-pressed="false"><strong>12</strong><span>times table</span></button>
+        </nav>
+      </section>
+
+      <section class="game-page" aria-labelledby="game-title">
+        <button class="back-button" id="tables-button" type="button">← All tables</button>
+        <div class="game-card">
+          <span class="eyebrow">CHOOSE YOUR GAME</span>
+          <h2 id="game-title"><span id="game-table-number">10</span> Times Table</h2>
+          <div class="game-buttons">
+            <button class="game-button" type="button" data-game="1">Game 1</button>
+            <button class="game-button" type="button" data-game="2">Game 2</button>
+            <button class="game-button" type="button" data-game="3">Game 3</button>
+            <button class="game-button" type="button" data-game="4">Game 4</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="page page-right" aria-live="polite">
+        <button class="back-button" id="back-button" type="button">← Games</button>
+        <button class="restart-button" id="restart-button" type="button">Try again</button>
+        <header class="table-header">
+          <div>
+            <span class="mini-label" id="game-label">GAME 1</span>
+            <h2><span id="table-number">10</span> Times Table</h2>
+          </div>
+          <div class="game-timer" id="game-timer" hidden aria-label="Time remaining">
+            <span>TIME</span>
+            <strong id="timer-value">00:30</strong>
+          </div>
+          <span class="sun" aria-hidden="true">✦</span>
+        </header>
+
+        <div class="equations" id="equations"></div>
+
+        <div class="puzzle-area" id="puzzle-area" hidden>
+          <div class="puzzle-status">
+            <span>Find the pairs</span>
+            <button class="puzzle-start-button" id="puzzle-start-button" type="button">Start</button>
+            <strong><span id="pair-count">0</span> / 10</strong>
+          </div>
+          <div class="puzzle-board" id="puzzle-board" aria-label="Times table matching puzzle"></div>
+          <p class="puzzle-feedback" id="puzzle-feedback" role="status"></p>
+        </div>
+
+        <div class="whack-area" id="whack-area" hidden>
+          <div class="whack-top" id="whack-top">
+            <div>
+              <span class="mini-label">HIT THE CORRECT ANSWER</span>
+              <strong id="whack-question">5 × 4 = ?</strong>
+            </div>
+            <div class="whack-score">SCORE <b id="whack-score">0</b></div>
+          </div>
+          <div class="mole-field" id="mole-field" aria-label="Answer choices"></div>
+          <div class="game-over" id="game-over" hidden>
+            <strong>GAME OVER</strong>
+            <div class="game-over-results">
+              <span>Correct <b id="final-whack-score">0</b></span>
+              <span>Errors <b id="final-whack-errors">0</b></span>
+            </div>
+          </div>
+          <p class="whack-feedback" id="whack-feedback" role="status">Choose the correct answer!</p>
+        </div>
+
+        <div class="table-actions" id="table-actions" hidden>
+          <button id="check-table" type="button">Check answers!</button>
+          <p id="table-feedback" role="status"></p>
+        </div>
+
+        <aside class="score-board" id="score-board" hidden aria-label="Correct answers">
+          <span class="mini-label">CORRECT ANSWERS</span>
+          <strong><span id="correct-count">0</span><small>/ 12</small></strong>
+          <p>Keep going!</p>
+        </aside>
+
+        <div class="challenge" id="challenge">
+          <div>
+            <span class="mini-label">QUICK CHALLENGE</span>
+            <p><strong id="question">10 × 7</strong> = ?</p>
+          </div>
+          <form id="quiz-form">
+            <label class="sr-only" for="answer">Your answer</label>
+            <input id="answer" inputmode="numeric" autocomplete="off" placeholder="?" />
+            <button type="submit">Check!</button>
+          </form>
+          <p class="feedback" id="feedback" role="status"></p>
+        </div>
+      </section>
+    </main>
+    <div class="hammer-cursor" id="hammer-cursor" hidden aria-hidden="true">
+      <svg viewBox="0 0 36 36">
+        <g transform="rotate(-35 18 18)">
+          <g class="hammer-handle">
+            <rect x="15" y="11" width="6" height="23" rx="3" fill="#7a4825" stroke="#130f0c" stroke-width="2.4" />
+          </g>
+          <g class="hammer-head">
+            <rect x="5" y="3" width="26" height="11" rx="3" fill="#266b68" stroke="#130f0c" stroke-width="3" />
+            <path d="M10 4v9M26 4v9" stroke="#b9d6cf" stroke-width="1.7" />
+          </g>
+        </g>
+      </svg>
+    </div>
+    <script>
+      const tabs = [...document.querySelectorAll(".tab")];
+      const notebook = document.querySelector(".notebook");
+      const backButton = document.querySelector("#back-button");
+      const tablesButton = document.querySelector("#tables-button");
+      const gameButtons = [...document.querySelectorAll(".game-button")];
+      const gameTableNumber = document.querySelector("#game-table-number");
+      const gameLabel = document.querySelector("#game-label");
+      const equations = document.querySelector("#equations");
+      const tableNumber = document.querySelector("#table-number");
+      const question = document.querySelector("#question");
+      const quizForm = document.querySelector("#quiz-form");
+      const answer = document.querySelector("#answer");
+      const feedback = document.querySelector("#feedback");
+      const challenge = document.querySelector("#challenge");
+      const tableActions = document.querySelector("#table-actions");
+      const checkTable = document.querySelector("#check-table");
+      const tableFeedback = document.querySelector("#table-feedback");
+      const scoreBoard = document.querySelector("#score-board");
+      const correctCount = document.querySelector("#correct-count");
+      const puzzleArea = document.querySelector("#puzzle-area");
+      const puzzleBoard = document.querySelector("#puzzle-board");
+      const pairCount = document.querySelector("#pair-count");
+      const puzzleFeedback = document.querySelector("#puzzle-feedback");
+      const puzzleStartButton = document.querySelector("#puzzle-start-button");
+      const gameTimer = document.querySelector("#game-timer");
+      const timerValue = document.querySelector("#timer-value");
+      const quizButton = quizForm.querySelector("button");
+      const whackArea = document.querySelector("#whack-area");
+      const whackQuestion = document.querySelector("#whack-question");
+      const moleField = document.querySelector("#mole-field");
+      const whackScoreElement = document.querySelector("#whack-score");
+      const whackFeedback = document.querySelector("#whack-feedback");
+      const gameOver = document.querySelector("#game-over");
+      const finalWhackScore = document.querySelector("#final-whack-score");
+      const finalWhackErrors = document.querySelector("#final-whack-errors");
+      const whackTop = document.querySelector("#whack-top");
+      const hammerCursor = document.querySelector("#hammer-cursor");
+      const restartButton = document.querySelector("#restart-button");
+
+      let currentTable = 10;
+      let currentMultiplier = 7;
+      let currentGame = 0;
+      let timerInterval = null;
+      let timerRemaining = 30;
+      let gameTimedOut = false;
+      let currentWhackAnswer = 0;
+      let whackScore = 0;
+      let whackErrors = 0;
+      let whackLocked = false;
+      let lastPuzzleBackground = -1;
+      const puzzleBackgrounds = Array.from({ length: 7 }, (_, index) => `assets/puzzle-bg-${index + 1}.png`);
+
+      function stopTimer(hide = true) {
+        window.clearInterval(timerInterval);
+        timerInterval = null;
+        if (hide) gameTimer.hidden = true;
+      }
+
+      function startTimer(onFinish, duration = 30) {
+        stopTimer(false);
+        timerRemaining = duration;
+        gameTimedOut = false;
+        timerValue.textContent = `${String(Math.floor(duration / 60)).padStart(2, "0")}:${String(duration % 60).padStart(2, "0")}`;
+        gameTimer.classList.remove("warning");
+        gameTimer.hidden = false;
+
+        timerInterval = window.setInterval(() => {
+          timerRemaining -= 1;
+          timerValue.textContent = `${String(Math.floor(timerRemaining / 60)).padStart(2, "0")}:${String(timerRemaining % 60).padStart(2, "0")}`;
+          gameTimer.classList.toggle("warning", timerRemaining <= 10);
+          if (timerRemaining === 0) {
+            gameTimedOut = true;
+            stopTimer(false);
+            onFinish();
+          }
+        }, 1000);
+      }
+
+      function newQuestion() {
+        currentMultiplier = Math.floor(Math.random() * 12) + 1;
+        question.textContent = `${currentTable} × ${currentMultiplier}`;
+        answer.value = "";
+        feedback.textContent = "";
+        feedback.classList.remove("wrong");
+      }
+
+      function renderTable(number) {
+        currentTable = number;
+        tableNumber.textContent = number;
+        equations.innerHTML = Array.from({ length: 12 }, (_, index) => {
+          const multiplier = index + 1;
+          return `<p class="equation">${number} × ${multiplier} = <b>${number * multiplier}</b></p>`;
+        }).join("");
+        newQuestion();
+      }
+
+      function renderAnswerTable(number) {
+        tableNumber.textContent = number;
+        equations.innerHTML = Array.from({ length: 12 }, (_, index) => {
+          const multiplier = index + 1;
+          return `<label class="equation answer-equation">
+            <span>${number} × ${multiplier} =</span>
+            <input class="equation-answer" inputmode="numeric" aria-label="${number} times ${multiplier}" data-answer="${number * multiplier}" />
+          </label>`;
+        }).join("");
+        tableFeedback.textContent = "";
+        correctCount.textContent = "0";
+      }
+
+      function updateCorrectCounter() {
+        const inputs = [...document.querySelectorAll(".equation-answer")];
+        const correct = inputs.filter((input) => (
+          input.value.trim() !== "" && Number(input.value) === Number(input.dataset.answer)
+        )).length;
+        correctCount.textContent = String(correct);
+        return correct;
+      }
+
+      function renderPuzzle(number, operation = "multiplication") {
+        selectedPuzzleCard = null;
+        puzzleLocked = true;
+        const availableBackgrounds = puzzleBackgrounds
+          .map((background, index) => ({ background, index }))
+          .filter(({ index }) => index !== lastPuzzleBackground);
+        const selectedBackground = availableBackgrounds[Math.floor(Math.random() * availableBackgrounds.length)];
+        lastPuzzleBackground = selectedBackground.index;
+        puzzleBoard.style.backgroundImage = `url("${selectedBackground.background}")`;
+        const cards = Array.from({ length: 10 }, (_, index) => {
+          const multiplier = index + 1;
+          const isDivision = operation === "division";
+          return [
+            {
+              pair: multiplier,
+              label: isDivision ? `${number * multiplier} ÷ ${number}` : `${number} × ${multiplier}`
+            },
+            { pair: multiplier, label: String(isDivision ? multiplier : number * multiplier) }
+          ];
+        }).flat();
+
+        for (let index = cards.length - 1; index > 0; index -= 1) {
+          const randomIndex = Math.floor(Math.random() * (index + 1));
+          [cards[index], cards[randomIndex]] = [cards[randomIndex], cards[index]];
+        }
+
+        puzzleBoard.innerHTML = cards.map((card) => (
+          `<button class="puzzle-card" type="button" data-pair="${card.pair}">${card.label}</button>`
+        )).join("");
+        pairCount.textContent = "0";
+        puzzleStartButton.hidden = false;
+        puzzleBoard.classList.add("waiting");
+        puzzleFeedback.textContent = "Press Start when you are ready.";
+      }
+
+      function finishPuzzleGame() {
+        puzzleLocked = true;
+        puzzleBoard.querySelectorAll(".puzzle-card:not(.matched)").forEach((card) => {
+          card.disabled = true;
+        });
+        puzzleFeedback.textContent = currentGame === 3
+          ? "Time’s up! Try the division puzzle again."
+          : "Time’s up! Try the game again.";
+      }
+
+      function renderWhackRound() {
+        whackLocked = gameTimedOut;
+        const multiplier = Math.floor(Math.random() * 12) + 1;
+        const isDivision = Math.random() < 0.5;
+
+        if (isDivision) {
+          currentWhackAnswer = multiplier;
+          whackQuestion.textContent = `${currentTable * multiplier} ÷ ${currentTable} = ?`;
+        } else {
+          currentWhackAnswer = currentTable * multiplier;
+          whackQuestion.textContent = `${currentTable} × ${multiplier} = ?`;
+        }
+
+        const choices = new Set([currentWhackAnswer]);
+        while (choices.size < 3) {
+          let choice;
+          if (isDivision) {
+            choice = Math.floor(Math.random() * 12) + 1;
+          } else {
+            const nearbyMultiplier = Math.floor(Math.random() * 12) + 1;
+            choice = currentTable * nearbyMultiplier;
+          }
+          choices.add(choice);
+        }
+
+        const shuffled = [...choices];
+        for (let index = shuffled.length - 1; index > 0; index -= 1) {
+          const randomIndex = Math.floor(Math.random() * (index + 1));
+          [shuffled[index], shuffled[randomIndex]] = [shuffled[randomIndex], shuffled[index]];
+        }
+
+        const positions = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+        for (let index = positions.length - 1; index > 0; index -= 1) {
+          const randomIndex = Math.floor(Math.random() * (index + 1));
+          [positions[index], positions[randomIndex]] = [positions[randomIndex], positions[index]];
+        }
+
+        const slots = Array(9).fill(null);
+        shuffled.forEach((choice, index) => { slots[positions[index]] = choice; });
+        moleField.classList.remove("hiding");
+        moleField.innerHTML = slots.map((choice) => choice === null
+          ? `<button class="mole-hole empty" type="button" disabled aria-label="Empty hole"></button>`
+          : `<button class="mole-hole" type="button" data-answer="${choice}" aria-label="Answer ${choice}">
+              <span class="mole"><img src="assets/cartoon-mole-sprite.png" alt="" /><b>${choice}</b></span>
+            </button>`
+        ).join("");
+        if (gameTimedOut) {
+          moleField.querySelectorAll(".mole-hole").forEach((hole) => { hole.disabled = true; });
+        }
+      }
+
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          tabs.forEach((item) => {
+            const isActive = item === tab;
+            item.classList.toggle("active", isActive);
+            item.setAttribute("aria-pressed", String(isActive));
+          });
+          renderTable(Number(tab.dataset.table));
+          gameTableNumber.textContent = currentTable;
+          notebook.classList.remove("table-open");
+          notebook.classList.add("game-menu");
+          document.querySelector(".game-page").scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      });
+
+      backButton.addEventListener("click", () => {
+        stopTimer();
+        notebook.classList.remove("table-open", "answer-game", "puzzle-game", "whack-game");
+        notebook.classList.add("game-menu");
+        document.querySelector(".game-page").scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+
+      tablesButton.addEventListener("click", () => {
+        stopTimer();
+        notebook.classList.remove("game-menu", "answer-game", "puzzle-game", "whack-game");
+        tabs.forEach((tab) => {
+          tab.classList.remove("active");
+          tab.setAttribute("aria-pressed", "false");
+        });
+        document.querySelector(".page-left").scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+
+      restartButton.addEventListener("click", () => {
+        const currentGameButton = gameButtons.find((button) => Number(button.dataset.game) === currentGame);
+        if (currentGameButton) currentGameButton.click();
+      });
+
+      gameButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          const game = Number(button.dataset.game);
+          currentGame = game;
+          stopTimer();
+          answer.disabled = false;
+          quizButton.disabled = false;
+          gameLabel.textContent = `GAME ${game}`;
+          if (game === 1) {
+            renderAnswerTable(currentTable);
+            equations.hidden = false;
+            puzzleArea.hidden = true;
+            whackArea.hidden = true;
+            challenge.hidden = true;
+            tableActions.hidden = false;
+            scoreBoard.hidden = false;
+            notebook.classList.remove("puzzle-game", "whack-game");
+            notebook.classList.add("answer-game");
+          } else if (game === 2) {
+            renderPuzzle(currentTable, "multiplication");
+            equations.hidden = true;
+            puzzleArea.hidden = false;
+            whackArea.hidden = true;
+            challenge.hidden = true;
+            tableActions.hidden = true;
+            scoreBoard.hidden = true;
+            notebook.classList.remove("answer-game", "whack-game");
+            notebook.classList.add("puzzle-game");
+          } else if (game === 3) {
+            renderPuzzle(currentTable, "division");
+            equations.hidden = true;
+            puzzleArea.hidden = false;
+            whackArea.hidden = true;
+            challenge.hidden = true;
+            tableActions.hidden = true;
+            scoreBoard.hidden = true;
+            notebook.classList.remove("answer-game", "whack-game");
+            notebook.classList.add("puzzle-game");
+          } else {
+            equations.hidden = true;
+            puzzleArea.hidden = true;
+            whackArea.hidden = false;
+            challenge.hidden = true;
+            tableActions.hidden = true;
+            scoreBoard.hidden = true;
+            notebook.classList.remove("answer-game", "puzzle-game");
+            notebook.classList.add("whack-game");
+            whackScore = 0;
+            whackErrors = 0;
+            gameTimedOut = false;
+            whackScoreElement.textContent = "0";
+            finalWhackScore.textContent = "0";
+            finalWhackErrors.textContent = "0";
+            gameOver.hidden = true;
+            moleField.hidden = false;
+            whackTop.hidden = false;
+            whackFeedback.textContent = "Choose the correct answer!";
+            renderWhackRound();
+            startTimer(() => {
+              whackLocked = true;
+              moleField.querySelectorAll(".mole-hole").forEach((hole) => { hole.disabled = true; });
+              finalWhackScore.textContent = String(whackScore);
+              finalWhackErrors.textContent = String(whackErrors);
+              moleField.hidden = true;
+              whackTop.hidden = true;
+              gameOver.hidden = false;
+              whackFeedback.textContent = "Time’s up!";
+            }, 60);
+          }
+          notebook.classList.remove("game-menu");
+          notebook.classList.add("table-open");
+          document.querySelector(".page-right").scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+      });
+
+      puzzleStartButton.addEventListener("click", () => {
+        if (currentGame !== 2 && currentGame !== 3) return;
+        puzzleStartButton.hidden = true;
+        puzzleBoard.classList.remove("waiting");
+        puzzleLocked = false;
+        gameTimedOut = false;
+        puzzleFeedback.textContent = "Choose an example, then find its answer.";
+        startTimer(finishPuzzleGame);
+      });
+
+      checkTable.addEventListener("click", () => {
+        const inputs = [...document.querySelectorAll(".equation-answer")];
+
+        inputs.forEach((input) => {
+          const isCorrect = input.value.trim() !== "" && Number(input.value) === Number(input.dataset.answer);
+          input.classList.toggle("correct", isCorrect);
+          input.classList.toggle("wrong", !isCorrect);
+        });
+
+        const correct = updateCorrectCounter();
+
+        tableFeedback.textContent = correct === inputs.length
+          ? "Brilliant! All answers are correct!"
+          : `${correct} of ${inputs.length} correct. Try the red ones again!`;
+      });
+
+      equations.addEventListener("input", (event) => {
+        if (event.target.classList.contains("equation-answer")) {
+          event.target.classList.remove("correct", "wrong");
+          updateCorrectCounter();
+        }
+      });
+
+      let selectedPuzzleCard = null;
+      let puzzleLocked = false;
+
+      puzzleBoard.addEventListener("click", (event) => {
+        const card = event.target.closest(".puzzle-card");
+        if (!card || puzzleLocked || card.classList.contains("matched") || card === selectedPuzzleCard) return;
+
+        card.classList.add("selected");
+        if (!selectedPuzzleCard) {
+          selectedPuzzleCard = card;
+          return;
+        }
+
+        if (selectedPuzzleCard.dataset.pair === card.dataset.pair) {
+          selectedPuzzleCard.classList.remove("selected");
+          card.classList.remove("selected");
+          selectedPuzzleCard.classList.add("matched");
+          card.classList.add("matched");
+          const matchedCards = [selectedPuzzleCard, card];
+          selectedPuzzleCard = null;
+          const matches = puzzleBoard.querySelectorAll(".matched").length / 2;
+          pairCount.textContent = String(matches);
+          puzzleFeedback.textContent = matches === 10 ? "Amazing! You found every pair!" : "Great match! Keep going.";
+          if (matches === 10) stopTimer(false);
+          window.setTimeout(() => {
+            matchedCards.forEach((matchedCard) => matchedCard.classList.add("vanished"));
+          }, 350);
+          return;
+        }
+
+        puzzleLocked = true;
+        selectedPuzzleCard.classList.add("missed");
+        card.classList.add("missed");
+        puzzleFeedback.textContent = "Not a pair. Try again!";
+        const firstCard = selectedPuzzleCard;
+        window.setTimeout(() => {
+          firstCard.classList.remove("selected", "missed");
+          card.classList.remove("selected", "missed");
+          selectedPuzzleCard = null;
+          puzzleLocked = gameTimedOut;
+        }, 650);
+      });
+
+      moleField.addEventListener("click", (event) => {
+        const hole = event.target.closest(".mole-hole");
+        if (!hole || hole.classList.contains("empty") || whackLocked) return;
+        whackLocked = true;
+        moleField.classList.add("hiding");
+
+        if (Number(hole.dataset.answer) === currentWhackAnswer) {
+          hole.classList.add("hit");
+          whackScore += 1;
+          whackScoreElement.textContent = String(whackScore);
+          whackFeedback.textContent = "Correct! Here comes the next one.";
+          window.setTimeout(renderWhackRound, 450);
+        } else {
+          hole.classList.add("miss");
+          whackErrors += 1;
+          whackFeedback.textContent = "Not that one. Here comes a new group!";
+          window.setTimeout(renderWhackRound, 450);
+        }
+      });
+
+      whackArea.addEventListener("pointermove", (event) => {
+        hammerCursor.hidden = false;
+        hammerCursor.style.left = `${event.clientX}px`;
+        hammerCursor.style.top = `${event.clientY}px`;
+      });
+      whackArea.addEventListener("pointerleave", () => { hammerCursor.hidden = true; });
+      whackArea.addEventListener("pointerdown", () => {
+        hammerCursor.classList.remove("striking");
+        void hammerCursor.offsetWidth;
+        hammerCursor.classList.add("striking");
+      });
+
+      quizForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        if (gameTimedOut && currentGame === 3) return;
+        const correctAnswer = currentTable * currentMultiplier;
+        const guess = Number(answer.value.trim());
+
+        if (answer.value.trim() !== "" && guess === correctAnswer) {
+          feedback.textContent = "Brilliant! You got it!";
+          feedback.classList.remove("wrong");
+          window.setTimeout(newQuestion, 900);
+        } else {
+          feedback.textContent = "Almost! Look at the table and try once more.";
+          feedback.classList.add("wrong");
+          answer.select();
+        }
+      });
+
+    </script>
+  </body>
+</html>
